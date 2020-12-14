@@ -4,14 +4,20 @@
 
 <div class="row">
     <div class="col-lg-12 text-center">
-        <h1 class="mt-5">Świat filmów</h1>
-        <p class="lead">Najlepsze pomysły na długie, zimowe wieczory!</p>
+        <h1 class="mt-5">Movie World</h1>
+        <p class="lead">Best ideas for long winter evenings</p>
     </div>
     <div class="col-lg-12 mb-4">
-        <a href="{{ url_for('homepage', list_type='now_playing') }}" class='btn btn-outline-info'>Now Playing</a>
-        <a href="{{ url_for('homepage', list_type='top_rated') }}" class="btn btn-outline-info">Top Rated</a>
-        <a href="{{ url_for('homepage', list_type='latest') }}" class="btn btn-outline-info">Latest</a>
-        <a href="{{ url_for('homepage', list_type='upcoming') }}" class="btn btn-outline-info">Upcoming</a>
+            {% if chosen_list != "" %}
+            {% set list1 = chosen_list.split('_') %}
+            {% set string1 = list1|join(' ') %}
+            <a href="{{ url_for('homepage', list_type=chosen_list) }}" class="btn btn-primary">{{ string1.title() }}</a>
+            {% endif %}
+            {% for list in movie_lists %}
+            {% set list2 = list.split('_') %}
+            {% set string2 = list2|join(' ') %}
+            <a href="{{ url_for('homepage', list_type=list) }}" class="btn btn-outline-info">{{ string2.title() }}</a>
+            {% endfor %}
     </div>
     {% for movie in movies %}
     <div class="col-lg-3 col-md-6 mb-4">
@@ -21,7 +27,7 @@
                 <h4 class="card-title">{{movie.title}}</h4>
             </div>
             <div class="card-footer text-center">
-                <a href="{{ url_for('movie_details', movie_id=movie.id) }}">Pokaż więcej</a>
+                <a href="{{ url_for('movie_details', movie_id=movie.id) }}">See more</a>
             </div>
         </div>
     </div>
