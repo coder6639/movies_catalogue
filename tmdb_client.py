@@ -26,8 +26,11 @@ def get_movies_list(list_name):
 
 def get_poster_url(path, size="w342"):
     base_url = "https://image.tmdb.org/t/p/"
-    total_url = base_url + size + path
-    return total_url
+    if path:
+        total_url = base_url + size + path
+        return total_url
+    else:
+        return "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"
 
 
 def get_movies(how_many, list_name="popular"):
@@ -65,9 +68,33 @@ def get_single_image(movie_id):
         "Authorization": f"Bearer {API_TOKEN}"
     }
     response = requests.get(endpoint, headers=headers)
-    for item in response.json()["backdrops"]:
-        image_list.append(item["file_path"])
 
-    chosen_image = image_list[random.randint(1, len(response.json()["backdrops"]) - 1)]
+    if response.json()["backdrops"]:
+        for item in response.json()["backdrops"]:
+            image_list.append(item["file_path"])
 
-    return chosen_image
+        chosen_image = image_list[random.randint(1, len(response.json()["backdrops"]) - 1)]
+        return chosen_image
+    else:
+        return "https://upload.wikimedia.org/wikipedia/commons/f/fc/No_picture_available.png"
+
+
+def search_movie(search_query):
+    endpoint = f"https://api.themoviedb.org/3/search/movie?query={search_query}"
+    headers = {
+        "Authorization": f"Bearer {API_TOKEN}"
+    }
+    response = requests.get(endpoint, headers=headers)
+    response = response.json()
+
+    return response["results"]
+
+
+def airing_today():
+    endpoint = "https://api.themoviedb.org/3/tv/airing_today"
+    headers = {
+        "Authorization": f"Bearer {API_TOKEN}"
+    }
+    response = requests.get(endpoint, headers=headers)
+    response.raise_for_status()
+    return response.json()["results"]
