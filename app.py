@@ -12,11 +12,10 @@ def homepage():
     selected_list = request.args.get("list_type", "popular")
     if selected_list not in movie_lists:
         movies = tmdb_client.get_movies(8, list_name="popular")
-        return render_template("homepage.html", movies=movies, chosen_list="", movie_lists=movie_lists)
+        return render_template("homepage.html", movies=movies, selected_list="", movie_lists=movie_lists)
     else:
         movies = tmdb_client.get_movies(8, list_name=selected_list)
-        movie_lists.remove(selected_list)
-    return render_template("homepage.html", movies=movies, chosen_list=selected_list, movie_lists=movie_lists)
+    return render_template("homepage.html", movies=movies, selected_list=selected_list, movie_lists=movie_lists)
 
 
 @app.context_processor

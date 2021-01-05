@@ -8,16 +8,17 @@
         <p class="lead">Best ideas for long winter evenings</p>
     </div>
     <div class="col-lg-12 mb-4">
-            {% if chosen_list != "" %}
-            {% set list1 = chosen_list.split('_') %}
-            {% set string1 = list1|join(' ') %}
-            <a href="{{ url_for('homepage', list_type=chosen_list) }}" class="btn btn-primary">{{ string1.title() }}</a>
-            {% endif %}
-            {% for list in movie_lists %}
-            {% set list2 = list.split('_') %}
-            {% set string2 = list2|join(' ') %}
-            <a href="{{ url_for('homepage', list_type=list) }}" class="btn btn-outline-info">{{ string2.title() }}</a>
-            {% endfor %}
+                {% for list in movie_lists %}
+                    {% if selected_list == list %}
+                        {% set list1 = selected_list.split('_') %}
+                        {% set string1 = list1|join(' ') %}
+                        <a href="{{ url_for('homepage', list_type=list) }}" class="btn btn-primary">{{ string1.title() }}</a>
+                    {% else %}
+                        {% set list2 = list.split('_') %}
+                        {% set string2 = list2|join(' ') %}
+                        <a href="{{ url_for('homepage', list_type=list) }}" class="btn btn-outline-info">{{ string2.title() }}</a>
+                   {% endif %}
+                {% endfor %}
     </div>
     {% for movie in movies %}
     <div class="col-lg-3 col-md-6 mb-4">
