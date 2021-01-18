@@ -36,10 +36,11 @@ def get_poster_url(path, size="w342"):
 def get_movies(how_many, list_name="popular"):
     selection = get_movies_list(list_name)["results"]
     movies = []
-    while len(movies) != how_many:
-        lucky_guess = random.randint(1, len(selection) - 1)
-        if selection[lucky_guess] not in movies:
-            movies.append(selection[lucky_guess])
+    if selection:
+        while len(movies) != how_many:
+            lucky_guess = random.randint(0, len(selection) - 1)
+            if selection[lucky_guess] not in movies:
+                movies.append(selection[lucky_guess])
     return movies
 
 
